@@ -33,13 +33,36 @@ public class AlunoService implements Serializable {
 	        int statusCode = response.statusCode();  
 	        log.info("HTTP status: " + statusCode);  
 
-	        log.info("Users returned in request: " + response.body());  
+	        log.info("Users returned in request: " + response.body());
 	        return AlunoMapper.toList(response.body());
 	       
 	    }  
 	    catch (IOException | InterruptedException e) {  
 	        throw new RuntimeException(e);  
 	    }  
+	}
+
+	public void salvar(Aluno aluno) throws IOException {
+
+		HttpClient httpClient = HttpClient.newHttpClient();
+		String jsonBody = JsonUtils.toJson(aluno);
+		log.info("\n\nJSON enviado no POST: " + jsonBody + "\n\n");
+		try {
+
+		HttpRequest request = HttpRequest.newBuilder(URI.create(JsonUtils.ALUNO_API))
+				.header("Content-Type", "application/json")
+				.header("Accept", "application/json")
+				.POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+				.build();
+			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+			log.info("HTTP status POST: " + response.statusCode());
+			log.info("Response body: " + response.body());
+			if (response.statusCode() < 200 || response.statusCode() >= 300) {
+				throw new RuntimeException("Erro ao salvar aluno. Código HTTP: " + response.statusCode());
+			}
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 	}
 	
 	

@@ -28,7 +28,7 @@ public class ManterAlunoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<Aluno> alunos = new ArrayList<>();
-	private Aluno aluno;
+	private Aluno aluno = new Aluno();
 
 	@Inject
 	private AlunoService alunoService;
@@ -40,7 +40,14 @@ public class ManterAlunoBean implements Serializable {
 	}
 
 	public void salvar() {
-		log.info("salvando Aluno..."); 		
+		log.info("salvando Aluno...");
+
+		try {
+			alunoService.salvar(this.aluno);
+        } catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 	
 	public void excluir() {

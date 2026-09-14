@@ -12,7 +12,7 @@ import tools.jackson.databind.ObjectMapper;
 public class JsonUtils {
 
 
-	    public static final String ALUNO_API = "http://localhost:8081/demo-api/alunos";  
+	    public static final String ALUNO_API = "http://localhost:8082/demo-api/alunos";
 	    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();  
 
 	    public static List<Aluno> toList(InputStream inputStream) throws IOException {  
